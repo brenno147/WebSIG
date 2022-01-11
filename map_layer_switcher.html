@@ -59,21 +59,22 @@
 
   <body>
 
-	 <div id="map"> 
-	 	<div id="legend"></div>
-	 </div>
-    <script type="text/javascript">
 
-	
-	var view = new ol.View({
-	projection: 'EPSG:4674',
-         center: [78.0,23.0],
+	 <div id="map">
+		<div id="legend"></div> 
+	 </div>
+   
+	 <script type="text/javascript">
+
+var view = new ol.View({
+	projection: 'EPSG:4326',
+         center: [-54.585956, -25.538514],
           zoom: 5,
 		  
         });
 		var view_ov = new ol.View({
-	projection: 'EPSG:4674',
-        center: [78.0,23.0],
+	projection: 'EPSG:4326',
+        center: [-54.585956, -25.538514],
           zoom: 5,
         });
 		
@@ -103,8 +104,28 @@
 		  title: 'brasil',
          // extent: [-180, -90, -180, 90],
           source: new ol.source.ImageWMS({
-            url: 'http://localhost:8080/geoserver',
-            params: {'LAYERS':'atividadeSIG:lml_pais_a'},
+            url: 'http://localhost:8080/geoserver/wms',
+            params: {'LAYERS':'WebGIS:brufe250gc_sir'},
+            ratio: 1,
+            serverType: 'geoserver'
+          })
+        }),
+		new ol.layer.Image({
+		  title: 'brasil',
+         // extent: [-180, -90, -180, 90],
+          source: new ol.source.ImageWMS({
+            url: 'http://localhost:8080/geoserver/wms',
+            params: {'LAYERS':'WebGIS:hidrovias_linha_2014'},
+            ratio: 1,
+            serverType: 'geoserver'
+          })
+        }),
+		new ol.layer.Image({
+		  title: 'brasil',
+         // extent: [-180, -90, -180, 90],
+          source: new ol.source.ImageWMS({
+            url: 'http://localhost:8080/geoserver/wms',
+            params: {'LAYERS':'WebGIS:portos_2014'},
             ratio: 1,
             serverType: 'geoserver'
           })
@@ -202,6 +223,42 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 	 
 	 legend();
 		
+/*		
+		var view = new ol.View({
+center: [-54.585956, -25.538514],
+zoom: 12,
+projection: 'EPSG:4326'
+});
+// É utilizado para referenciar fonte de camadas de imagens, definição de atributos e
+var osm = new ol.layer.Tile({
+title: 'OSM',
+type: 'base',
+visible: true,
+// Referência para a camada de imagem: OpenStreetMap.
+source: new ol.source.OSM()
+});
+
+// Representa nosso mapa, no qual irá ser visualizada da div map, já definida no arquivo
+var map = new ol.Map({
+target: 'map',
+layers: [osm],
+view: view
+});
+
+var wms_layer = new OpenLayers.Layer.WMS(
+'OpenLayers WMS',
+'http://localhost:8080/geoserver/wms',
+{layers: 'WebGIS:brufe250gc_sir'},{});
+map.addLayer(wms_layer);
+		
+var layerSwitcher = new ol.control.LayerSwitcher({
+    activationMode: 'click',
+    startActive: true,
+	tipLabel: 'Layers', // Optional label for button
+    groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+    collapseTipLabel: 'Collapse layers',
+  });
+  map.addControl(layerSwitcher);*/
 	  
     </script>
 	
