@@ -112,7 +112,17 @@
          // extent: [-180, -90, -180, 90],
          	source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
-         	params: {'LAYERS':'	ibge:estados50'},
+         	params: {'LAYERS':'	ibge:estados50_1'},
+         	ratio: 1,
+         	serverType: 'geoserver'
+         })
+       	}),
+       	new ol.layer.Image({
+					title: 'Estados de fronteira com o Maranhão',
+         // extent: [-180, -90, -180, 90],
+         	source: new ol.source.ImageWMS({
+         	url: 'http://localhost:8080/geoserver/wms',
+         	params: {'LAYERS':'	ibge:fronteira_maranhao_1'},
          	ratio: 1,
          	serverType: 'geoserver'
          })
@@ -208,7 +218,7 @@
 			startActive: true,
 	tipLabel: 'Layers', // Optional label for button
     groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
-    collapseTipLabel: 'Collapse layers',
+    collapseTipLabel: 'Colapsar',
   });
 		map.addControl(layerSwitcher);
 
