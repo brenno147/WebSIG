@@ -101,7 +101,7 @@ var view = new ol.View({
                 'title': 'Overlays',
                 layers: [
 		 new ol.layer.Image({
-		  title: 'brasil',
+		  title: 'brufe250gc_sir',
          // extent: [-180, -90, -180, 90],
           source: new ol.source.ImageWMS({
             url: 'http://localhost:8080/geoserver/wms',
@@ -111,7 +111,7 @@ var view = new ol.View({
           })
         }),
 		new ol.layer.Image({
-		  title: 'brasil',
+		  title: 'hidrovias_linha_2014',
          // extent: [-180, -90, -180, 90],
           source: new ol.source.ImageWMS({
             url: 'http://localhost:8080/geoserver/wms',
@@ -121,7 +121,7 @@ var view = new ol.View({
           })
         }),
 		new ol.layer.Image({
-		  title: 'brasil',
+		  title: 'portos_2014',
          // extent: [-180, -90, -180, 90],
           source: new ol.source.ImageWMS({
             url: 'http://localhost:8080/geoserver/wms',
@@ -192,7 +192,7 @@ var layerSwitcher = new ol.control.LayerSwitcher({
 	
 		var head = document.createElement("h4");
 		
-        var txt = document.createTextNode("Legend");
+        var txt = document.createTextNode("Legenda");
 		
        head.appendChild(txt);
 	   var element = document.getElementById("legend");
