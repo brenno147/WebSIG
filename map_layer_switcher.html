@@ -108,26 +108,6 @@
 				'title': 'Elementos',
 				layers: [
 				new ol.layer.Image({
-					title: 'Área > 500000Km',
-         // extent: [-180, -90, -180, 90],
-         	source: new ol.source.ImageWMS({
-         	url: 'http://localhost:8080/geoserver/wms',
-         	params: {'LAYERS':'	ibge:estados50_1'},
-         	ratio: 1,
-         	serverType: 'geoserver'
-         })
-       	}),
-       	new ol.layer.Image({
-					title: 'Estados de fronteira com o Maranhão',
-         // extent: [-180, -90, -180, 90],
-         	source: new ol.source.ImageWMS({
-         	url: 'http://localhost:8080/geoserver/wms',
-         	params: {'LAYERS':'	ibge:fronteira_maranhao_1'},
-         	ratio: 1,
-         	serverType: 'geoserver'
-         })
-       	}),
-				new ol.layer.Image({
 					title: 'Estados',
          // extent: [-180, -90, -180, 90],
          source: new ol.source.ImageWMS({
@@ -143,16 +123,6 @@
          source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
          	params: {'LAYERS':'ibge:hidrovias_linha_2014'},
-         	ratio: 1,
-         	serverType: 'geoserver'
-         })
-       	}),
-       	new ol.layer.Image({
-					title: 'Portos em hidrovias no Sul',
-         // extent: [-180, -90, -180, 90],
-         	source: new ol.source.ImageWMS({
-         	url: 'http://localhost:8080/geoserver/wms',
-         	params: {'LAYERS':'	ibge:porto_hidrovia'},
          	ratio: 1,
          	serverType: 'geoserver'
          })
@@ -222,6 +192,19 @@
   });
 		map.addControl(layerSwitcher);
 
+    var legend_layers = [
+      'brufe250gc_sir',
+      'hidrovias_linha_2014',
+      'portos_2014'
+    ]
+
+    var legend_titles = [
+      'Estados',
+      'Hidrovias',
+      'Portos'
+    ]
+
+
 		function legend () {
 
 	//	$('#legend').empty();
@@ -237,14 +220,14 @@
 	element.appendChild(head);
 	var ar = [];
 	var i;
-	for (i = 0; i < no_layers; i++) {
-		ar.push("http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+overlays.getLayers().item(i).get('title'));
+	for (i = 0; i < 3; i++) {
+		ar.push("http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+ legend_layers[i]);
 		//alert(overlays.getLayers().item(i).get('title'));
 	}
-	for (i = 0; i < no_layers; i++) {
+	for (i = 0; i < 3; i++) {
 		var head = document.createElement("p");
 		
-		var txt = document.createTextNode(overlays.getLayers().item(i).get('title'));
+		var txt = document.createTextNode(legend_titles[i]);
 		//alert(txt[i]);
 		head.appendChild(txt);
 		var element = document.getElementById("legend");
