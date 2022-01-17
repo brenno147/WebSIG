@@ -1,19 +1,16 @@
 <!doctype html>
-	<html lang="en">
+<html lang="en">
 	<head>
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" href="http://localhost:8080/WebSIG/libs/v6.10.0/css/ol.css" type="text/css">
 		<link rel="stylesheet" href="http://localhost:8080/WebSIG/libs/v6.10.0/examples/resources/layout.css" type="text/css">
 		<link rel="stylesheet" href="http://localhost:8080/WebSIG/libs/ol-layerswitcher/dist/ol-layerswitcher.css" />
 
-
 		<script src="http://localhost:8080/WebSIG/libs/v6.10.0/build/ol.js"></script>
 		<script src="http://localhost:8080/WebSIG/libs/ol-layerswitcher/dist/ol-layerswitcher.js"></script>
 
-
-
-
 		<style>
+
 			html,body {
 				height: 100%;
 				padding: 0;
@@ -51,21 +48,12 @@
 				font-weight: bold;
 			}
 
-
 		</style>
 
 		<title>WebSIG</title>
 	</head>
 
 	<body>
-
-		<!--
-		<form action="/action_page.php">
-	  <label for="query">Estado:</label>
-	  <input type="text" id="query" name="query"><br><br>
-	  <input type="submit" value="Ver Área">
-		</form>
-		--> 
 		
 		<div id="map">
 			<div id="legend"></div> 
@@ -108,8 +96,25 @@
 				'title': 'Elementos',
 				layers: [
 				new ol.layer.Image({
+					title: 'Área > 500000Km',
+         	source: new ol.source.ImageWMS({
+         	url: 'http://localhost:8080/geoserver/wms',
+         	params: {'LAYERS':'	ibge:estados50_1'},
+         	ratio: 1,
+         	serverType: 'geoserver'
+         })
+       	}),
+       	new ol.layer.Image({
+					title: 'Estados de fronteira com o Maranhão',
+         	source: new ol.source.ImageWMS({
+         	url: 'http://localhost:8080/geoserver/wms',
+         	params: {'LAYERS':'	ibge:fronteira_maranhao_1'},
+         	ratio: 1,
+         	serverType: 'geoserver'
+         })
+       	}),
+				new ol.layer.Image({
 					title: 'Estados',
-         // extent: [-180, -90, -180, 90],
          source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
          	params: {'LAYERS':'ibge:brufe250gc_sir'},
@@ -119,7 +124,6 @@
        	}),
 				new ol.layer.Image({
 					title: 'Hidrovias',
-         // extent: [-180, -90, -180, 90],
          source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
          	params: {'LAYERS':'ibge:hidrovias_linha_2014'},
@@ -127,9 +131,17 @@
          	serverType: 'geoserver'
          })
        	}),
+       	new ol.layer.Image({
+					title: 'Portos em hidrovias no Sul',
+         	source: new ol.source.ImageWMS({
+         	url: 'http://localhost:8080/geoserver/wms',
+         	params: {'LAYERS':'	ibge:porto_hidrovia'},
+         	ratio: 1,
+         	serverType: 'geoserver'
+         })
+        }),
 				new ol.layer.Image({
 					title: 'Portos',
-         // extent: [-180, -90, -180, 90],
          	source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
          	params: {'LAYERS':'ibge:portos_2014'},
@@ -137,112 +149,105 @@
          	serverType: 'geoserver'
          })
        	})
-			]
-		});
+				]
+			});
 
 
-		var map = new ol.Map({
-			target: 'map',
-			view: view,
-		});
+			var map = new ol.Map({
+				target: 'map',
+				view: view,
+			});
 
 			map.addLayer(base_maps);
 			map.addLayer(overlays);
 
-		//overlays.getLayers().push(rainfall);
-		//map.addLayer(rainfall);
+			var mouse_position = new ol.control.MousePosition();
+			map.addControl(mouse_position);
 
-		var mouse_position = new ol.control.MousePosition();
-		map.addControl(mouse_position);
+			var overview = new ol.control.OverviewMap({
+				view: view_ov, 
+				collapseLabel:'O', 
+				label: 'O',
+				layers:[OSM]
+			});
+			map.addControl(overview);
 
-		var overview = new ol.control.OverviewMap({
-			view: view_ov, 
-			collapseLabel:'O', 
-			label: 'O',
-			layers:[OSM]
-		});
-		map.addControl(overview);
+			var full_sc = new ol.control.FullScreen({label:'F'});
+			map.addControl(full_sc);
 
-		var full_sc = new ol.control.FullScreen({label:'F'});
-		map.addControl(full_sc);
+			var zoom = new ol.control.Zoom({zoomInLabel:'+', zoomOutLabel:'-'});
+			map.addControl(zoom);
 
-		var zoom = new ol.control.Zoom({zoomInLabel:'+', zoomOutLabel:'-'});
-		map.addControl(zoom);
-
-		var slider = new ol.control.ZoomSlider();
-		map.addControl(slider);
+			var slider = new ol.control.ZoomSlider();
+			map.addControl(slider);
 
 
 
-		var zoom_ex = new ol.control.ZoomToExtent({
-			label:'C',
-			extent:[
-			-73.27,-30.20,
-			-25.96,4.30
-			]
-		});
-		map.addControl(zoom_ex);
-		
-		var layerSwitcher = new ol.control.LayerSwitcher({
-			activationMode: 'click',
-			startActive: true,
-	tipLabel: 'Layers', // Optional label for button
-    groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
-    collapseTipLabel: 'Colapsar',
-  });
-		map.addControl(layerSwitcher);
+			var zoom_ex = new ol.control.ZoomToExtent({
+				label:'C',
+				extent:[
+				-73.27,-30.20,
+				-25.96,4.30
+				]
+			});
+			map.addControl(zoom_ex);
+			
+			var layerSwitcher = new ol.control.LayerSwitcher({
+				activationMode: 'click',
+				startActive: true,
+			tipLabel: 'Layers', 
+		    groupSelectStyle: 'children', 
+		    collapseTipLabel: 'Colapsar',
+		  });
+			map.addControl(layerSwitcher);
 
-    var legend_layers = [
-      'brufe250gc_sir',
-      'hidrovias_linha_2014',
-      'portos_2014'
-    ]
+		  var legend_layers = [
+		    'brufe250gc_sir',
+		    'hidrovias_linha_2014',
+		    'portos_2014'
+		  ]
 
-    var legend_titles = [
-      'Estados',
-      'Hidrovias',
-      'Portos'
-    ]
+		  var legend_titles = [
+		    'Estados',
+		    'Hidrovias',
+		    'Portos'
+		  ]
 
 
-		function legend () {
+			function legend () {
 
-	//	$('#legend').empty();
+				var no_layers = overlays.getLayers().get('length');
+				
+				var head = document.createElement("h4");
 
-	var no_layers = overlays.getLayers().get('length');
-	
-	var head = document.createElement("h4");
+				var txt = document.createTextNode("Legenda");
 
-	var txt = document.createTextNode("Legenda");
+				head.appendChild(txt);
+				var element = document.getElementById("legend");
+				element.appendChild(head);
+				var ar = [];
+				var i;
+				for (i = 0; i < 3; i++) {
+					ar.push("http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+ legend_layers[i]);
+				}
+				for (i = 0; i < 3; i++) {
+					var head = document.createElement("p");
+					
+					var txt = document.createTextNode(legend_titles[i]);
+					head.appendChild(txt);
+					var element = document.getElementById("legend");
+					element.appendChild(head);
+					var img = new Image();
+					img.src = ar[i];
 
-	head.appendChild(txt);
-	var element = document.getElementById("legend");
-	element.appendChild(head);
-	var ar = [];
-	var i;
-	for (i = 0; i < 3; i++) {
-		ar.push("http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER="+ legend_layers[i]);
-		//alert(overlays.getLayers().item(i).get('title'));
-	}
-	for (i = 0; i < 3; i++) {
-		var head = document.createElement("p");
-		
-		var txt = document.createTextNode(legend_titles[i]);
-		//alert(txt[i]);
-		head.appendChild(txt);
-		var element = document.getElementById("legend");
-		element.appendChild(head);
-		var img = new Image();
-		img.src = ar[i];
+					var src = document.getElementById("legend");
+					src.appendChild(img);
+				}
 
-		var src = document.getElementById("legend");
-		src.appendChild(img);
+			}
 
-	}
-}
+			legend();
 
-legend();
-</script>
-
-</body>
+		</script>
+	</body>
 </html>
