@@ -96,7 +96,7 @@
 				'title': 'Elementos',
 				layers: [
 				new ol.layer.Image({
-					title: 'Área > 500000Km',
+					title: 'Área > 50 unidades quadradas',
          	source: new ol.source.ImageWMS({
          	url: 'http://localhost:8080/geoserver/wms',
          	params: {'LAYERS':'	ibge:estados50_1'},
@@ -195,7 +195,7 @@
 			var layerSwitcher = new ol.control.LayerSwitcher({
 				activationMode: 'click',
 				startActive: true,
-			tipLabel: 'Layers', 
+			tipLabel: 'Camadas', 
 		    groupSelectStyle: 'children', 
 		    collapseTipLabel: 'Colapsar',
 		  });

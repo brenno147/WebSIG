@@ -16,5 +16,12 @@ group by po.gid, po.municipio, po.geom
 
 select uf2.gid, uf2.nm_estado, uf2.geom
 from brufe250gc_sir uf1, brufe250gc_sir uf2
-where uf1.nm_estado = 'MARANHÃO' and st_intersects(uf1.geom, uf2.geom)
+where uf1.nm_estado = 'MARANHÃO' and st_touches(uf1.geom, uf2.geom)
 and uf2.nm_estado <> 'MARANHÃO'
+
+Base de dados logística Brasil IBGE:
+https://www.ibge.gov.br/geociencias/cartas-e-mapas/redes-geograficas/15793-logistica-dos-transportes.html?=&t=downloads
+
+Base de dados estados Brasil IBGE:
+https://portaldemapas.ibge.gov.br/portal.php#homepage
+Organização do Território -> Malhas Territoriais -> Malha de unidade da federação -> Malha com todas as UFs -> Brasil - Unidades da federação (ano > 2015)
